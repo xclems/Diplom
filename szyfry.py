@@ -5,7 +5,7 @@ def szyfСezar(tekst, przesuniecie):
     for znak in tekst:
         if znak.isalpha():
             pocz = ord('A') if znak.isupper() else ord('a')
-            przesuniety_kod = (ord(znak) - baza + przesuniecie) % 26 + pocz
+            przesuniety_kod = (ord(znak) - pocz + przesuniecie) % 26 + pocz
             wynik.append(chr(przesuniety_kod))
         else:
             wynik.append(znak)
