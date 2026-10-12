@@ -90,7 +90,7 @@ class CaesarRNN:
         return "".join(result)
 
 if __name__ == "__main__":
-    file_path = "book_cleaned.txt"  
+    file_path = "../../book_cleaned.txt"  
     if os.path.exists(file_path):
         inputs, targets, vocab_size, c2i, i2c = prepare_dataset(file_path, seq_length=blok, shift=3)
         print(f"Bloków po {blok} symbolów: {len(inputs)}")
