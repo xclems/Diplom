@@ -1,3 +1,4 @@
+import random as ran
 import numpy as np
 import sys
 import os
@@ -6,11 +7,12 @@ blok = 40
 neur_ukryt = 8
 il_epoch = 10
 uczenie = 0.1
+klucz = ran.randint(1, 25)
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-from szyfry import szyfСezar
+from szyfry import szyfCezar
 
-def prepare_dataset(file_path, seq_length=blok, shift=3):
+def prepare_dataset(file_path, seq_length=blok, shift=klucz):
     with open(file_path, "r") as f:
         text = f.read()
     text = " ".join(text.split())
@@ -21,7 +23,7 @@ def prepare_dataset(file_path, seq_length=blok, shift=3):
     inputs, targets = [], []
     for i in range(0, len(text) - seq_length, seq_length):
         original_chunk = text[i:i + seq_length]
-        cipher_chunk = szyfСezar(original_chunk, shift)
+        cipher_chunk = szyfCezar(original_chunk, shift)
         inputs.append([char_to_idx[ch] for ch in cipher_chunk])
         targets.append([char_to_idx[ch] for ch in original_chunk])
         
@@ -91,11 +93,12 @@ class CaesarRNN:
         return "".join(result)
 
 if __name__ == "__main__":
-    file_path = "../../book_cleaned.txt"  
+    file_path = "book_cleaned.txt"  
     if os.path.exists(file_path):
         inputs, targets, vocab_size, c2i, i2c = prepare_dataset(file_path, seq_length=blok, shift=3)
         print(f"Bloków po {blok} symbolów: {len(inputs)}")
-        print(f"Neuronów: {neur_ukryt}")
+        print(f"Neuronów ukrytych: {neur_ukryt}")
+        print(f"Klucz: {klucz}")
         rnn = CaesarRNN(vocab_size=vocab_size, hidden_size=neur_ukryt)
         sample_input = inputs[0]
         sample_target_str = "".join([i2c[idx] for idx in targets[0]])
@@ -104,7 +107,7 @@ if __name__ == "__main__":
         print(f"\n[Początek uczenia]")
         print(f"Tekst szyfrowany: {sample_input_str}")
         print(f"Original:         {sample_target_str}")
-        print(f"Odpowiedź modelu: {rnn.predict(sample_input, i2c)}")
+        print(f"Odpowiedź modelu: {rnn.predict(sample_input, i2c)}\n")
         for epoch in range(0, il_epoch):
             total_loss = 0
             num_batches = min(100, len(inputs))

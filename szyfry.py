@@ -1,6 +1,6 @@
 # Szyfry: Cezar, Atbash, Vigenere, Podstawieniowy, Rail Fence
 # Cezar
-def szyfСezar(tekst, przesuniecie):
+def szyfCezar(tekst, przesuniecie):
     wynik = []
     for znak in tekst:
         if znak.isalpha():
@@ -10,5 +10,5 @@ def szyfСezar(tekst, przesuniecie):
         else:
             wynik.append(znak)
     return "".join(wynik)
-def deszyfСezar(szyfrogram, przesuniecie):
-    return szyfСezar(szyfrogram, -przesuniecie)
+def deszyfCezar(szyfrogram, przesuniecie):
+    return szyfCezar(szyfrogram, -przesuniecie)
