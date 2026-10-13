@@ -5,6 +5,7 @@ import os
 blok = 40
 neur_ukryt = 8
 il_epoch = 10
+uczenie = 0.1
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from szyfry import szyfСezar
@@ -30,15 +31,15 @@ class CaesarRNN:
     def __init__(self, vocab_size, hidden_size=neur_ukryt):
         self.vocab_size = vocab_size
         self.hidden_size = hidden_size
-        self.W_xh = np.random.randn(hidden_size, vocab_size) * 0.1
-        self.W_hh = np.random.randn(hidden_size, hidden_size) * 0.1
-        self.W_hy = np.random.randn(vocab_size, hidden_size) * 0.1
+        self.W_xh = np.random.randn(hidden_size, vocab_size) * uczenie
+        self.W_hh = np.random.randn(hidden_size, hidden_size) * uczenie
+        self.W_hy = np.random.randn(vocab_size, hidden_size) * uczenie
         self.b_h = np.zeros((hidden_size, 1))
         self.b_y = np.zeros((vocab_size, 1))
     def softmax(self, x):
         e_x = np.exp(x - np.max(x))
         return e_x / e_x.sum(axis=0, keepdims=True)
-    def forward_backward(self, inputs, targets, learning_rate=0.1):
+    def forward_backward(self, inputs, targets, learning_rate=uczenie):
         xs, hs, ys, ps = {}, {}, {}, {}
         hs[-1] = np.zeros((self.hidden_size, 1))
         loss = 0
